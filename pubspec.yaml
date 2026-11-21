@@ -1,0 +1,21 @@
+name: avi_ai
+description: "Avi AI — Abhi's approval-only AI inbox for WhatsApp, Instagram, Facebook Messenger and GBP. Manual mode v1: paste a message, get a draft in your trained style, approve, then send it yourself."
+publish_to: "none"
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.5.0 <4.0.0"
+  flutter: ">=3.24.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  uses-material-design: true
