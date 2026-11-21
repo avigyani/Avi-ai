@@ -1,0 +1,32 @@
+name: Build Avi AI APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.35.4'
+          channel: stable
+      # Binary platform files (Gradle wrapper jar, launcher PNGs) are not
+      # stored in the repo — restore them from a fresh Flutter template.
+      - name: Restore binary platform files
+        run: |
+          flutter create --org com.avigyani --project-name avi_ai --platforms android /tmp/avi-template
+          cp /tmp/avi-template/android/gradle/wrapper/gradle-wrapper.jar android/gradle/wrapper/
+          cp -r /tmp/avi-template/android/app/src/main/res/mipmap-* android/app/src/main/res/
+          rm -rf /tmp/avi-template
+      - run: flutter pub get
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avi-ai-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
